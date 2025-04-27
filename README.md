@@ -14,16 +14,13 @@ The analysis produces a macro-resilience score designed to identify firms better
 ## Repository Structure
 
 ```
-macro-sensitivity-analysis/
-├── project_files/
-│   ├── clean_data.R
-│   ├── clean_data_2.R
-│   ├── data_analysis.R
-│   ├── scoring.R
-│   ├── wrds.R
-│   └── README.md
-├── writeup.tex
-└── writeup_fr.tex
+project_files/
+├── clean_data.R
+├── clean_data_2.R
+├── data_analysis.R
+├── scoring.R
+├── wrds.R
+└── README.md
 ```
 
 ## Data Requirements

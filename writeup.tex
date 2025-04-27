@@ -1,0 +1,111 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{float}
+\usepackage{indentfirst}
+
+\geometry{a4paper, margin=1in}
+\onehalfspacing
+
+\title{Macro-Factor Sensitivity Analysis for Financial Firms}
+\author{Ethan W. Robertson \\ College of William \& Mary}
+\date{Spring 2025}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This study analyzes the macroeconomic factor sensitivities of 316 publicly traded U.S. financial and banking firms using the first stage of the Fama-MacBeth two-step asset pricing model. Quarterly firm-level returns from 2001 to 2025 are regressed on standardized macroeconomic variables including inflation, credit spreads, and GDP growth. To account for firm-level heterogeneity, controls such as Return on Equity and leverage ratios are incorporated. The estimated factor loadings (betas) were used to construct a custom macro-resilience score designed to identify firms better positioned to withstand adverse macroeconomic conditions. This framework is particularly relevant in the context of April 2025, amid elevated inflation, widening credit spreads, and slowing growth. The results reveal substantial cross-firm variation in macro exposures and offer a quantitative tool for macro-driven investment screening.
+\end{abstract}
+
+\section{Introduction and Motivation}
+
+The financial sector has experienced heightened volatility following the imposition of broad-based tariffs by the U.S. government in early April 2025. This policy shift has precipitated significant drawdowns across major equity indices, with financial institutions bearing a disproportionate share of the adverse effects. Against this backdrop of rising inflation expectations, deteriorating credit conditions, and a weakening growth outlook, this study seeks to identify financial firms whose return profiles demonstrate relative resilience to prevailing macroeconomic shocks.
+
+This research contributes to the literature on asset pricing and macro-finance by providing a granular, firm-level analysis of macroeconomic exposure within the financial sector. By quantifying the sensitivity of individual firms to key macroeconomic factors, this study offers insights into the differential impact of macroeconomic conditions across financial institutions.
+
+\section{Data and Methodology}
+
+\subsection{Sample Construction}
+
+The analysis focuses on a comprehensive sample of 316 U.S. financial and banking firms, identified through SIC codes 6000-6300. The study employs quarterly observations spanning from January 2001 to January 2025, ensuring coverage of multiple economic cycles and various market conditions. Firm-level return data is sourced from WRDS, specifically CRSP and Compustat databases, while macroeconomic series are obtained through the FRED API, providing a robust foundation for the empirical analysis.
+
+\subsection{Variable Selection}
+
+The selection of macroeconomic variables reflects key dimensions of the current economic environment. Table \ref{tab:variables} presents the primary variables and their corresponding proxies.
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{ll}
+        \toprule
+        Variable & Proxy \\
+        \midrule
+        Credit Conditions & BBB-AAA Credit Spread \\
+        Economic Growth & U.S. Real GDP YoY (\%) \\
+        Inflation & Consumer Price Index (CPI) YoY (\%) \\
+        Firm Controls & Leverage, Return on Equity, Market-to-Book \\
+        \bottomrule
+    \end{tabular}
+    \caption{Key Variables and Their Proxies}
+    \label{tab:variables}
+\end{table}
+
+\subsection{Estimation Procedure}
+
+The empirical analysis employs a time-series regression framework to estimate firm-level sensitivities to macroeconomic factors. For each firm $i$, the following specification is estimated:
+
+\begin{equation}
+    R_{i,t} = \alpha_i + \beta_{CPI}CPI_t + \beta_{Credit}Credit_t + \beta_{GDP}GDP_t + \gamma'X_{i,t} + \epsilon_{i,t}
+\end{equation}
+
+where $R_{i,t}$ represents the quarterly return for firm $i$ at time $t$, $CPI_t$, $Credit_t$, and $GDP_t$ denote standardized macroeconomic variables, $X_{i,t}$ encompasses firm-specific control variables, and $\epsilon_{i,t}$ captures the idiosyncratic error term. The standardization of variables facilitates the interpretation of coefficients as partial correlations, while the inclusion of firm-specific controls helps mitigate potential omitted variable bias.
+
+\subsection{Construction of Macro-Resilience Score}
+
+To operationalize the concept of macroeconomic resilience, we develop a weighted scoring model that penalizes sensitivity to adverse factors while rewarding exposure to favorable conditions:
+
+\begin{equation}
+    Score = -0.6 \times \beta_{CPI} - 0.4 \times \beta_{Credit} + 0.5 \times \beta_{GDP}
+\end{equation}
+
+The weights reflect the relative importance of each factor in the current macroeconomic environment, with inflation and credit risk receiving negative weights due to their adverse implications, while GDP growth receives a positive weight. To ensure the robustness of the scoring mechanism, only coefficients that are statistically significant at the 5\% level ($p < 0.05$) are incorporated into the final score.
+
+\section{Empirical Results}
+
+The analysis reveals substantial cross-sectional variation in macroeconomic sensitivity across financial firms. Among the most resilient institutions, Cadence Bank (CADE) emerges as particularly noteworthy, with a resilience score of 0.376. This performance is driven by negative sensitivities to both inflation ($\beta_{CPI} = -0.42$) and credit risk ($\beta_{Credit} = -0.30$), coupled with an impressive average quarterly return of 7.23\% since 2001. Other firms demonstrating notable resilience include FRME, CPF, and LARK.
+
+Conversely, the analysis identifies several firms with elevated sensitivity to adverse macroeconomic conditions. Firms such as VEL, HLI, and GAIN exhibit particularly high exposure to inflation and credit risk factors, suggesting potential vulnerability in the current economic environment.
+
+\section{Discussion and Strategic Implications}
+
+The current macroeconomic environment, characterized by tariff-induced cost pressures, rising risk premia, and slowing real activity, presents significant challenges for financial institutions. The developed scoring model provides a systematic framework for identifying firms that are better positioned to navigate these challenges. This approach is particularly valuable for portfolio managers seeking to construct defensive sector allocations or implement factor-based rotation strategies.
+
+The findings suggest that firms with minimal exposure to inflation and credit risk factors may offer relative stability in the current environment. This insight has important implications for both portfolio construction and risk management practices within the financial sector.
+
+\section{Technical Implementation}
+
+The empirical analysis is implemented through a combination of Python and R, leveraging the strengths of each language for specific components of the research pipeline. The complete codebase is available in the GitHub repository at \url{https://github.com/erobertson753/macro_sensitivity_analysis}. The analysis pipeline consists of several key components:
+
+\begin{itemize}
+    \item \texttt{wrds.R}: WRDS database queries and return calculations
+    \item \texttt{clean\_data.R}: Data cleaning and preparation
+    \item \texttt{clean\_data\_2.R}: Additional data processing and returns calculation
+    \item \texttt{data\_analysis.R}: Core regression modeling and diagnostics
+    \item \texttt{scoring.R}: Implementation of the resilience scoring model
+\end{itemize}
+
+\section{Future Research Directions}
+
+While this study provides valuable insights into the first-stage time-series regressions of the Fama-MacBeth framework, several promising avenues for future research emerge. The implementation of the second-stage cross-sectional regression would enable the estimation of time-varying risk premia, potentially offering additional insights into the pricing of macroeconomic risk factors. Furthermore, the development of a dynamic, quarterly-updated screening tool could enhance the practical utility of the framework for real-time investment decisions. Extending the analysis to other sectors, such as technology, industrials, or consumer cyclicals, would facilitate a comparative analysis of macro-sensitivity across industries and assess the robustness of the resilience scoring methodology in different contexts.
+
+\section*{References}
+\begin{itemize}
+    \item Fama, Eugene F. and MacBeth, James D. (1973). "Risk, Return, and Equilibrium: Empirical Tests." \textit{The University of Chicago Press Journals}, Volume 81, Number 3.
+\end{itemize}
+
+\end{document} 

@@ -14,16 +14,13 @@ L'analyse produit un score de résilience macroéconomique conçu pour identifie
 ## Structure du Dépôt
 
 ```
-macro-sensitivity-analysis/
-├── project_files/
-│   ├── clean_data.R
-│   ├── clean_data_2.R
-│   ├── data_analysis.R
-│   ├── scoring.R
-│   ├── wrds.R
-│   └── README_FR.md
-├── writeup.tex
-└── writeup_fr.tex
+project_files/
+├── clean_data.R
+├── clean_data_2.R
+├── data_analysis.R
+├── scoring.R
+├── wrds.R
+└── README_FR.md
 ```
 
 ## Exigences en Matière de Données
